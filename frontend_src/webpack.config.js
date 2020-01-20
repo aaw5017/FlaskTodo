@@ -1,7 +1,7 @@
 const path = require('path'),
     miniCss = require('mini-css-extract-plugin'),
     SRC_PATH = path.resolve(__dirname, './app/main.js'),
-    DEST_PATH = path.resolve(__dirname, '../static/js'),
+    DEST_PATH = path.resolve(__dirname, '../app/static/js'),
     MODULES_PATH = path.resolve(__dirname, './node_modules');
 
 module.exports = {
