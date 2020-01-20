@@ -12,9 +12,7 @@ class ToDo(db.Model):
         return {
             'id': self.id,
             'text': self.text,
-            'is_completed': self.is_completed,
-            # 'created_date': self.created_date,
-            # 'updated_date': self.updated_date
+            'is_completed': self.is_completed
         }
 
     def __repr__(self):

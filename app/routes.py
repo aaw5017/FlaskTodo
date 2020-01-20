@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, request, make_response
 from datetime import datetime
 from time import sleep
 from data.provider import db
-from data.ToDo import ToDo
+from data.models import ToDo
 from app import app
 
 @app.route('/')
