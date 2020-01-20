@@ -1,0 +1,10 @@
+:root {
+    font-size: 18px;
+}
+body {
+    font-family: 'Alata', sans-serif;
+}
+
+@import './typography';
+@import './headings';
+@import './inputs';
