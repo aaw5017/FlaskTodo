@@ -5,8 +5,6 @@
 
     let isReady = false,
         isLoading = false,
-        hasError = false,
-        errorText = '',
         todos = [],
         newText = '',
         inputEl;
@@ -16,8 +14,6 @@
             todos = await ToDoService.getAll();
         } catch (error) {
             console.log(error);
-            hasError = true;
-            errorText = 'Unable to load ToDo list. Please try again.';
         } finally {
             isReady = true;
         }
@@ -35,9 +31,7 @@
                 inputEl.focus(); // Fix for Chrome-based browsers. Engine is too fast without setTimeout
             }, 1);
         } catch (error) {
-            console.log(error);
-            hasError = true;
-            errorText = 'Unable to add ToDo item. Please try again.';
+            console.error(error);
         } finally {
             isLoading = false;
         }
@@ -82,28 +76,23 @@
 
 <section class="todo-list-container">
     {#if isReady}
-        {#if hasError}
-            <strong>An error occurred. Unable to load ToDo list.</strong>
-        {:else}
-            <h1 class="todo-list-header">ToDo List</h1>
-            <form on:submit|preventDefault="{handleSubmit}">
-                <input bind:value="{newText}"
-                    bind:this="{inputEl}"
-                    type="text"
-                    maxlength="250"
-                    placeholder="Type a ToDo and hit 'Enter'"
-                    disabled="{isLoading}"
-                    autofocus />
-            </form>
-            {#if todos.length > 0}
-                <ul class="list">
-                    {#each todos as todo}
-                        <ToDoItem data="{todo}" on:delete="{handleDelete}" on:edit="{handleEdit}" />
-                    {/each}
-                </ul>
-            {/if}
+        <h1 class="todo-list-header">ToDo List</h1>
+        <form on:submit|preventDefault="{handleSubmit}">
+            <input bind:value="{newText}"
+                bind:this="{inputEl}"
+                type="text"
+                maxlength="250"
+                placeholder="Type a ToDo and hit 'Enter'"
+                disabled="{isLoading}" />
+        </form>
+        {#if todos.length > 0}
+            <ul class="list">
+                {#each todos as todo}
+                    <ToDoItem data="{todo}" on:delete="{handleDelete}" on:edit="{handleEdit}" />
+                {/each}
+            </ul>
         {/if}
     {:else}
-        <strong>Loading...</strong>
+        <h2 class="todo-list-header">Loading ToDo List...</h2>
     {/if}
 </section>

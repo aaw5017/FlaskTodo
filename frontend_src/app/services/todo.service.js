@@ -7,49 +7,62 @@ class Service {
         this.delete = this.delete.bind(this);
     }
 
-    async getAll() {
-        const res = await fetch(this._baseUrl);
-        return await res.json();
+    _isJsonResponse(contentType) {
+        return ((contentType || '').indexOf('application/json') > -1);
+
     }
-    async add(text) {
-        const modelJson = JSON.stringify({
+
+    // Async keyword guarantees that the function will return a Promise / thenable
+    async _makeRequest(url, options) {
+        const resp = await fetch(url, options),
+            { status, headers } = resp,
+            isJson = this._isJsonResponse(headers.get('content-type')),
+            data = (isJson) ? await resp.json() : await resp.text();
+
+        if (status > 199 && status < 300) {
+            return data;
+        }
+
+        const defaultMsg = `Request was not successful at ${url}`;
+        const message = (isJson) ? (data.message || defaultMsg)
+            : data || defaultMsg;
+
+        throw new Error(message);
+    }
+
+    getAll() {
+        return this._makeRequest(this._baseUrl);
+    }
+
+    add(text) {
+        const body = JSON.stringify({
                 text,
                 is_completed: false
             }),
             headers = new Headers({
                 'Content-Type': 'application/json',
-                'Content-Length': modelJson.length
+                'Content-Length': body.length
             });
 
-        const res = await fetch(this._baseUrl, {
-            method: 'POST',
-            headers,
-            body: modelJson
-        });
-
-        return await res.json();
+        return this._makeRequest(this._baseUrl, { method: 'POST', headers, body });
     }
-    async update(todo) {
+
+    update(todo) {
         const modelJson = JSON.stringify(todo),
             headers = new Headers({
                 'Content-Type': 'application/json',
                 'Content-Length': modelJson.length
             });
 
-        const res = await fetch(`${this._baseUrl}/${todo.id}`, {
+        return this._makeRequest(`${this._baseUrl}/${todo.id}`, {
             method: 'PUT',
             headers,
             body: modelJson
         });
-
-        return await res.json();
     }
-    async delete(id) {
-        const res = await fetch(`${this._baseUrl}/${id}`, {
-            method: 'DELETE'
-        });
 
-        return await res.text();
+    delete(id) {
+        return this._makeRequest(`${this._baseUrl}/${id}`, { method: 'DELETE' });
     }
 }
 
