@@ -13,14 +13,16 @@
         try {
             todos = await ToDoService.getAll();
         } catch (error) {
-            console.log(error);
+            console.error(error);
         } finally {
             isReady = true;
         }
     });
 
     async function handleSubmit(e) {
-        if (newText.length === 0) return;
+        if (newText.length === 0) {
+            return;
+        }
 
         isLoading = true;
         try {
@@ -50,10 +52,17 @@
 
     async function handleEdit(event) {
         try {
-            const { detail: todoId } = event;
+            const { detail: todo } = event;
 
-            await ToDoService.delete(todoId);
-            todos = todos.filter(td => td.id !== todoId);
+            await ToDoService.update(todo);
+
+            todos = todos.map(td => {
+                if (td.id !== todo.id) {
+                    return td;
+                }
+
+                return { ...td, ...todo };
+            });
         } catch (error) {
             console.error(error);
         }
@@ -75,8 +84,13 @@
 </style>
 
 <section class="todo-list-container">
+    <h1 class="todo-list-header">ToDo List</h1>
+
+    {#if !isReady}
+        <h2 class="todo-list-header">Loading ToDo List...</h2>
+    {/if}
+
     {#if isReady}
-        <h1 class="todo-list-header">ToDo List</h1>
         <form on:submit|preventDefault="{handleSubmit}">
             <input bind:value="{newText}"
                 bind:this="{inputEl}"
@@ -88,11 +102,13 @@
         {#if todos.length > 0}
             <ul class="list">
                 {#each todos as todo}
-                    <ToDoItem data="{todo}" on:delete="{handleDelete}" on:edit="{handleEdit}" />
+                    <ToDoItem data="{todo}"
+                        on:delete="{handleDelete}"
+                        on:edit="{handleEdit}" />
                 {/each}
             </ul>
+        {:else}
+            <h4 class="todo-list-header"><i>No ToDos. Add some!</i></h4>
         {/if}
-    {:else}
-        <h2 class="todo-list-header">Loading ToDo List...</h2>
     {/if}
 </section>

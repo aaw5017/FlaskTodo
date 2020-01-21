@@ -12,6 +12,13 @@ class Service {
 
     }
 
+    _getJsonReqHeaders(json) {
+        return new Headers({
+            'content-type': 'application/json',
+            'content-lenth': json.length
+        });
+    }
+
     // Async keyword guarantees that the function will return a Promise / thenable
     async _makeRequest(url, options) {
         const resp = await fetch(url, options),
@@ -39,25 +46,19 @@ class Service {
                 text,
                 is_completed: false
             }),
-            headers = new Headers({
-                'Content-Type': 'application/json',
-                'Content-Length': body.length
-            });
+            headers = this._getJsonReqHeaders(body);
 
         return this._makeRequest(this._baseUrl, { method: 'POST', headers, body });
     }
 
     update(todo) {
-        const modelJson = JSON.stringify(todo),
-            headers = new Headers({
-                'Content-Type': 'application/json',
-                'Content-Length': modelJson.length
-            });
+        const body = JSON.stringify(todo),
+            headers = this._getJsonReqHeaders(body);
 
         return this._makeRequest(`${this._baseUrl}/${todo.id}`, {
             method: 'PUT',
             headers,
-            body: modelJson
+            body
         });
     }
 

@@ -1,0 +1,24 @@
+$default-color: #2b2b2b;
+$danger-color: #cc0000;
+
+.btn {
+    padding: 0 10px;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 35px;
+    height: 35px;
+    line-height: 35px;
+
+    &-default {
+        background-color: $default-color;
+        &:hover {
+            background-color: darken($default-color, 5%);
+        }
+    }
+    &-danger {
+        background-color: $danger-color;
+        &:hover {
+            background-color: darken($danger-color, 5%);
+        }
+    }
+}
