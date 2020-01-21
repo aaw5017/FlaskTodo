@@ -59,6 +59,12 @@
     .ml-auto {
         margin-left: auto;
     }
+    .success {
+        color: #4BB543;
+    }
+    .danger {
+        color: #721c24;
+    }
 
     li {
         padding: 15px 10px;
@@ -81,8 +87,8 @@
         margin-right: 15px;
         font-size: 1.2rem;
     }
-    .success {
-        color: #4BB543;
+    .completed-toggle:hover {
+        color: #808080;
     }
     .done {
         text-decoration: line-through;
@@ -96,9 +102,6 @@
         color: #0c5460;
     }
 
-    .delete {
-        color: #721c24;
-    }
 
     .editor-wrap {
         flex-grow: 1;
@@ -128,7 +131,7 @@
             <i class="fa fa-edit"></i>
         </button>
         <button type="button"
-            class="action delete"
+            class="action danger"
             title="Delete this ToDo"
             on:click="{dispatchDelete}">
             <i class="fa fa-times"></i>
