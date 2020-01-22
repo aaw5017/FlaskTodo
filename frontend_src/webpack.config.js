@@ -2,7 +2,8 @@ const path = require('path'),
     miniCss = require('mini-css-extract-plugin'),
     SRC_PATH = path.resolve(__dirname, './app/main.js'),
     DEST_PATH = path.resolve(__dirname, '../app/static/js'),
-    MODULES_PATH = path.resolve(__dirname, './node_modules');
+    MODULES_PATH = path.resolve(__dirname, './node_modules'),
+    processSass = require('./svelte-sass-processor');
 
 module.exports = {
     mode: 'development',
@@ -29,7 +30,17 @@ module.exports = {
             {
                 test: /\.(html|svelte)$/,
                 exclude: /node_modules/,
-                use: [{ loader: 'svelte-loader', options: { emitCss: true }}]
+                use: [
+                    {
+                        loader: 'svelte-loader',
+                        options: {
+                            preprocess: {
+                                style: processSass
+                            },
+                            emitCss: true
+                        }
+                    }
+                ]
             },
             {
                 test: /\.scss$/,

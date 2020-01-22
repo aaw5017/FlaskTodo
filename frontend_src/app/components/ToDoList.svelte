@@ -69,17 +69,19 @@
     }
 </script>
 
-<style>
-    input[type="text"] {
-        margin-bottom: .75rem;
-    }
-    .todo-list-header {
-        text-align: center;
-    }
-    .list {
-        border: 1px solid #b6b5b6;
-        border-radius: 4px;
-        box-shadow: 2px 2px 5px 0 #aaa;
+<style lang="scss" type="text/scss">
+    .todo-list {
+        &-header {
+            text-align: center;
+        }
+        &-collection {
+            border: 1px solid #b6b5b6;
+            border-radius: 4px;
+            box-shadow: 2px 2px 5px 0 #aaa;
+        }
+        &-entry {
+            margin-bottom: .75rem;
+        }
     }
 </style>
 
@@ -92,7 +94,8 @@
 
     {#if isReady}
         <form on:submit|preventDefault="{handleSubmit}">
-            <input bind:value="{newText}"
+            <input class="todo-list-entry"
+                bind:value="{newText}"
                 bind:this="{inputEl}"
                 type="text"
                 maxlength="250"
@@ -100,7 +103,7 @@
                 disabled="{isLoading}" />
         </form>
         {#if todos.length > 0}
-            <ul class="list">
+            <ul class="todo-list-collection">
                 {#each todos as todo}
                     <ToDoItem data="{todo}"
                         on:delete="{handleDelete}"
