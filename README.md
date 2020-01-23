@@ -11,7 +11,7 @@ This application assumes Python 3 (3.7.4 at time of writing). Pipenv is used as 
 
 #### Create SQLite Tables
 
-In a Python terminal, run the `create-db.py` script.
+Inside the pipenv shell, start a Python command line. Run the `create-db.py` script.
 
 #### Install NPM Modules
 
