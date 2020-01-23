@@ -7,3 +7,5 @@ const app = new App({
 });
 
 export default app;
+
+if (module.hot) module.hot.accept();

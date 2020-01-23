@@ -4,7 +4,7 @@
     const year = (new Date()).getUTCFullYear();
 </script>
 
-<style>
+<style lang="scss">
     main {
         max-width: 850px;
         margin: 0 auto;

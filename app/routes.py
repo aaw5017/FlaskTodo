@@ -1,17 +1,20 @@
-from flask import Flask, render_template, jsonify, request, make_response
+from flask import Flask, Blueprint, render_template, jsonify, request, make_response
 from datetime import datetime
 from data.provider import db
 from data.models import ToDo
 from app import app
 
+index_bp = Blueprint('index', __name__)
+api_bp = Blueprint('api', __name__, url_prefix='/api')
+
 def error_response(message: str, status_code: int):
     return make_response({'message': message}, status_code)
 
-@app.route('/')
+@index_bp.route('/')
 def index():
     return render_template('main.html')
 
-@app.route('/todos', methods=['GET', 'POST'])
+@api_bp.route('/todos', methods=['GET', 'POST'])
 def get_todos():
     with app.app_context():
         if request.method == 'GET':
@@ -33,7 +36,7 @@ def get_todos():
 
         return make_response(todo.serialize(), 201)
 
-@app.route('/todos/<int:todo_id>', methods=['PUT', 'DELETE'])
+@api_bp.route('/todos/<int:todo_id>', methods=['PUT', 'DELETE'])
 def alter_todo(todo_id: int):
     with app.app_context():
         todo: ToDo = ToDo.query.get(todo_id)

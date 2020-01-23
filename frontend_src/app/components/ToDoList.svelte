@@ -69,7 +69,7 @@
     }
 </script>
 
-<style lang="scss" type="text/scss">
+<style lang="scss">
     .todo-list {
         &-header {
             text-align: center;

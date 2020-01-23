@@ -5,17 +5,22 @@ const path = require('path'),
     MODULES_PATH = path.resolve(__dirname, './node_modules'),
     processSass = require('./svelte-sass-processor');
 
+const mode = process.env.NODE_ENV || 'development',
+    isDev = mode === 'development',
+    plugins = isDev ? undefined : [new miniCss({filename: '../css/[name].css'})];
+
 module.exports = {
-    mode: 'development',
-    watch: true,
+    mode: mode,
+    watch: false,
     devtool: 'source-map',
     entry: {
-        app: SRC_PATH
+        app: [SRC_PATH]
     },
     output: {
-        filename: 'app.min.js',
-        chunkFilename: 'app.min.js',
-        path: DEST_PATH
+        filename: 'app.js',
+        chunkFilename: 'app.js',
+        path: DEST_PATH,
+        publicPath: '/static/js/' // needed for HMR
     },
     resolve: {
         alias: {
@@ -32,12 +37,17 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: 'svelte-loader',
+                        loader: 'svelte-loader-hot',
                         options: {
                             preprocess: {
                                 style: processSass
                             },
-                            emitCss: true
+                            emitCss: !isDev,
+                            hotReload: isDev,
+                            hotOptions: {
+                                noPreserveState: false, // Default: false
+                                optimistic: false // Default: false
+                            }
                         }
                     }
                 ]
@@ -46,7 +56,7 @@ module.exports = {
                 test: /\.scss$/,
                 exclude: /node_modules/,
                 use: [
-                    miniCss.loader,
+                    isDev ? 'style-loader' : miniCss.loader,
                     'css-loader',
                     'sass-loader'
                 ]
@@ -54,13 +64,18 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    miniCss.loader,
+                    isDev ? 'style-loader' : miniCss.loader,
                     'css-loader'
                 ]
             }
         ]
     },
-    plugins: [new miniCss({
-        filename: '../css/[name].css'
-    })]
+    plugins,
+    devServer: {
+        publicPath: 'http://127.0.0.1:5000/static/js/',
+        proxy: {
+            '/': 'http://127.0.0.1:5000'
+        },
+        hot: true
+    }
 };

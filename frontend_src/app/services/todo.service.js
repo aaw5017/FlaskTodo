@@ -1,6 +1,6 @@
 class Service {
     constructor() {
-        this._baseUrl = '/todos';
+        this._baseUrl = '/api/todos';
         this.getAll = this.getAll.bind(this);
         this.add = this.add.bind(this);
         this.update = this.update.bind(this);
