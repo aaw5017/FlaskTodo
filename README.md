@@ -27,4 +27,5 @@ This application utilizes HMR, and as such uses a webpack development server to 
 
 Navigate to the **frontend_src** folder and run the `npm run dev` command. This will start the Webpack dev server and should listen on a port that's different from your Flask server port. The terminal should display the port in which it's listening. In my case, it was **localhost:8080**.
 
-Now, navigate to your Webpack dev server address and you should be all set. Your front end source files should be hot-reloaded onto the page, and all api requests should be proxied to the Flask backend. Data should be persisted inside the local SQLite database you created above.
+## Using the App
+Navigate to your Webpack dev server address and you should be all set. Your front end source files should be hot-reloaded onto the page, and all api requests should be proxied to the Flask backend. Data should be persisted inside the local SQLite database you created above.
