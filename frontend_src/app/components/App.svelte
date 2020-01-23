@@ -1,7 +1,6 @@
 <script>
     import { ToDoService } from '../services/todo.service';
     import ToDoList from './ToDoList.svelte';
-    const year = (new Date()).getUTCFullYear();
 </script>
 
 <style lang="scss">
