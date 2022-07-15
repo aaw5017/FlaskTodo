@@ -22,7 +22,7 @@
     "sass-loader": "8.0.2",
     "source-map-loader": "0.2.4",
     "style-loader": "1.2.1",
-    "svelte": "3.22.2",
+    "svelte": "3.49.0",
     "svelte-loader": "2.13.6",
     "svelte-loader-hot": "0.3.0",
     "webpack": "4.43.0",
